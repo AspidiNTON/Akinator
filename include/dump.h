@@ -2,6 +2,7 @@
 #define DUMP_H
 
 #include <stdio.h>
+#include <ctype.h>
 
 #include "tree.h"
 

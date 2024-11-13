@@ -11,8 +11,8 @@ bool destroyNode(Node* node){
         printErr("Node nullptr recieved aaa\n");
         return false;
     }
-    if (node->left != NULL) destroyNode(node->left);
-    if (node->left != NULL) destroyNode(node->right);
+    if (node->left  != NULL) destroyNode(node->left);
+    if (node->right != NULL) destroyNode(node->right);
     free(node);
     return true;
 }
@@ -86,7 +86,7 @@ Node* readNode(const char* begin, const char* end){
     if (*(begin + firstElement) == '*') return node;
     int secondElement = firstElement, bracketCount = 0;
     do{
-        if (*(begin + secondElement) == '(')  ++bracketCount;
+        if      (*(begin + secondElement) == '(') ++bracketCount;
         else if (*(begin + secondElement) == ')') --bracketCount;
         ++secondElement;
     } while (bracketCount > 0);

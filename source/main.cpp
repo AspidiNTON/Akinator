@@ -9,12 +9,14 @@ int main(){
 
     Node* tree = readTree("xdd.txt");
     initializeLogger();
-    
+
     gameLoop(tree);
 
-    
     writeNode("xdddddddd.txt", tree);
 
+    // free();
+
     closeLogger();
+    destroyNode(tree);
     return 0;
 }

@@ -3,7 +3,7 @@
 void getline(char* buff){
     fgets(buff, 199, stdin);
     int i = 0;
-    while (*(buff + i) != '\n') ++i;
+    while (*(buff + i) != '\n') ++i; // strspn
     *(buff + i) = '\0';
 }
 
@@ -24,21 +24,23 @@ bool gameLoop(Node* node){
     return true;
 }
 
-bool playGame(Node* node){
+bool playGame(Node* node){ // разбей на функции (неуд2)
     char str[100] = "";
-    while (node->left != NULL || node->right != NULL) {
+    while (node->left != NULL && node->right != NULL) {
         printf("%s [y/n]:\n", node->data);
         while (scanf("%99s", str)) {
             if (stricmp(str, "y") == 0 || stricmp(str, "n") == 0) break;
             printf("Please enter \"y\" or \"n\":\n");
         }
         if (stricmp(str, "y") == 0) node = node->left;
-        else node = node->right;
+        else                        node = node->right;
     }
+
     if ((node->left != NULL && node->left == NULL) || (node->left == NULL && node->left != NULL)) {
         printErr("Wtf it's not supposed to happen...\n");
         return false;
     }
+
     printf("Is it %s? [y/n]:\n", node->data);
     scanf("%99s", str);
     if (stricmp(str, "y") == 0) printf("Yippie, I won!\n");

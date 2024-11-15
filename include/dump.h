@@ -3,13 +3,25 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <windows.h>
 
 #include "tree.h"
+
+#ifdef DEBUG
+    #define ASSERT(condition, text_error) myAssert(condition, text_error, __FILE__, __func__, __LINE__);
+#else
+    #define ASSERT(condition, text_error) {}
+#endif
+
+void myAssert(bool condition, const char* text_error, const char* file, const char* func, int line);
+
 
 bool initializeLogger();
 
 void closeLogger();
 
 bool dumpTree(Node* node);
+
+char* getImageFilename();
 
 #endif

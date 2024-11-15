@@ -6,7 +6,6 @@ void printNodeData(FILE* file, TreeElem elem){
 }
 
 int main(){
-
     Node* tree = readTree("tree.txt");
     initializeLogger();
 

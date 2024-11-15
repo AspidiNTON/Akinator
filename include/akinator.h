@@ -8,4 +8,8 @@ bool gameLoop(Node* node);
 
 bool playGame(Node* node);
 
+bool showTree();
+
+bool printElementDefinition(Node* node);
+
 #endif

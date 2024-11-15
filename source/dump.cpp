@@ -4,17 +4,24 @@
 
 static FILE* htmlFilePtr;
 static int htmlImageCount;
-char dotFilename[80] = "logger/result.dot";
-char imageFilename[80] = "logger/output%d.svg";
+const char dotFilename[80] = "logger/result.dot";
+const char imageFilename[80] = "logger/output%d.png";
 
 bool createTreeDotFile(const Node* node, const char* outFilename);
 
 void printTreeInDotFormat(const Node* node, FILE* file, int rank);
 
-bool createSvgFromDot(const char* inFilename, const char* outFilename);
+bool createPngFromDot(const char* inFilename, const char* outFilename);
+
+void myAssert(bool condition, const char *text_error, const char *file, const char *func, int line) {
+    if (!(condition)) {
+        printErr("%s in: %s -> %s -> %d\n", text_error, file, func, line);
+        abort();
+    }
+}
 
 bool initializeLogger(){
-    //createSvgFromDot("123.txt", "234.txt & ");
+    //createPngFromDot("123.txt", "234.txt & ");
     htmlImageCount = 0;
     htmlFilePtr = fopen("listLog.html", "w");
     if (htmlFilePtr == NULL) {
@@ -30,6 +37,26 @@ void closeLogger(){
     fclose(htmlFilePtr);
 }
 
+char* getImageFilename(){
+    char* currentImageFilename = (char*)calloc(512, sizeof(char));
+    int len = 0;
+    if ((len = GetModuleFileNameA(NULL, currentImageFilename, 512)) == 0){
+        printErr("Unable to get file path\n");
+        return NULL;
+    }
+    while (*(currentImageFilename + len) != '\\') {
+        *(currentImageFilename + len) = '\0';
+        --len;
+    }
+    ++len;
+    char tmpFilename[200];
+    snprintf(tmpFilename, 199, "logger\\output%d.png", htmlImageCount - 1);
+
+    strcpy(currentImageFilename + len, tmpFilename);
+    //printf("%d: %s\n", len, currentImageFilename);
+    return currentImageFilename;
+}
+
 bool dumpTree(Node* node){
     #ifdef TREE_FUNCTIONS_DUMP
     if (htmlFilePtr == NULL) {
@@ -39,7 +66,7 @@ bool dumpTree(Node* node){
     if (!createTreeDotFile(node, dotFilename)) return false;
     char currentImageFilename[200] = {};
     snprintf(currentImageFilename, 199, imageFilename, htmlImageCount);
-    if (!createSvgFromDot(dotFilename, currentImageFilename)) return false;
+    if (!createPngFromDot(dotFilename, currentImageFilename)) return false;
     fprintf(htmlFilePtr, "<img src=\"%s\">\n\n\n\n", currentImageFilename);
     ++htmlImageCount;
     #endif
@@ -93,7 +120,7 @@ bool isFilenamaValid(const char* str){
     return true;
 }
 
-bool createSvgFromDot(const char* inFilename, const char* outFilename){
+bool createPngFromDot(const char* inFilename, const char* outFilename){
     if (inFilename == NULL || outFilename == NULL) {
         printErr("Filename nullptr recieved\n");
         return false;
@@ -101,7 +128,7 @@ bool createSvgFromDot(const char* inFilename, const char* outFilename){
     char command[200] = {};
     if (!isFilenamaValid(inFilename) || !isFilenamaValid(outFilename)) return false;
 
-    snprintf(command, 199, "dot -Tsvg %s -o %s", inFilename, outFilename); // snprintf FIXME:
+    snprintf(command, 199, "dot -Tpng %s -o %s", inFilename, outFilename); // snprintf FIXME:
     if (system(command) != 0) {
         printErr("Image creation command failed\n");
         return false;

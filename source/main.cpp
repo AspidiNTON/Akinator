@@ -7,14 +7,12 @@ void printNodeData(FILE* file, TreeElem elem){
 
 int main(){
 
-    Node* tree = readTree("xdd.txt");
+    Node* tree = readTree("tree.txt");
     initializeLogger();
 
     gameLoop(tree);
 
-    writeNode("xdddddddd.txt", tree);
-
-    // free();
+    //writeNode("xdddddddd.txt", tree);
 
     closeLogger();
     destroyNode(tree);

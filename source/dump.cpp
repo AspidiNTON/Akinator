@@ -14,7 +14,7 @@ void printTreeInDotFormat(const Node* node, FILE* file, int rank);
 bool createSvgFromDot(const char* inFilename, const char* outFilename);
 
 bool initializeLogger(){
-    createSvgFromDot("123.txt", "234.txt & ");
+    //createSvgFromDot("123.txt", "234.txt & ");
     htmlImageCount = 0;
     htmlFilePtr = fopen("listLog.html", "w");
     if (htmlFilePtr == NULL) {
